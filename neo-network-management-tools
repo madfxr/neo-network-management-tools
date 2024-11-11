@@ -1,0 +1,94 @@
+#!/bin/bash
+# Made with ✨ Magic ©️ Nur Mukhammad Agus (https://github.com/madfxr), 2024. Free and Open Source Software (FOSS)
+printf "\n\e[1;36m\e[5m          ようこそ\e[0m\e[1;36m\e[0m\n"
+printf "███╗   ██╗███████╗ ██████╗\n"
+printf "████╗  ██║██╔════╝██╔═══██╗\n"
+printf "██╔██╗ ██║█████╗  ██║   ██║\n"
+printf "██║╚██╗██║██╔══╝  ██║   ██║\n"
+printf "██║ ╚████║███████╗╚██████╔╝\n"
+printf "╚═╝  ╚═══╝╚══════╝ ╚═════╝\n"
+printf "\e[1;36m- NETWORK MANAGEMENT TOOLS -\e[0m\n"
+
+print_menu() {
+    printf "\n\e[4m\e[1;36mMENU\e[0m\n"
+    printf "D. Disable Router\n"
+    printf "E. Enable Router\n"
+    printf "X. Exit\n"
+}
+
+while true; do
+    print_menu
+    read -rp $'\e[1;33mENTER MENU: \e[0m' option
+
+    case $option in
+        D|d)
+            read -rp $'\e[1;33mINSERT PROJECT ID: \e[0m' project_id
+            printf "[INFORMATION] List of Instances for Project ID \e[1;36m%s\e[0m\n" "$project_id"
+            openstack server list --os-project-id "$project_id"
+
+            read -rp $'\e[1;33mINSERT FLOATING IP: \e[0m' floating_ip
+            printf "[INFORMATION] Detail of Floating IP  \e[1;36m%s\e[0m\n" "$floating_ip"
+            openstack floating ip list --os-project-id "$project_id" --fit-width | grep -E "$floating_ip"
+
+            router_id=$(openstack floating ip show "$floating_ip" --os-project-id "$project_id" | grep -E "router_id" | awk '{print $4}')
+
+            printf "[INFORMATION] List of Routers for Floating IP \e[1;36m%s\e[0m\n" "$floating_ip"
+            openstack router list --os-project-id "$project_id" --fit-width | grep -E "$router_id"
+
+            printf "[BEFORE] Ping from Floating IP %s \e[1;36m%s\e[0m\n" "$floating_ip"
+            ping -c7 "$floating_ip"
+
+            read -rp $'\e[1;33mINSERT ROUTER ID: \e[0m' router_id_confirm
+            if [ "$router_id" == "$router_id_confirm" ]; then
+                printf "[COMPLETED] Router \e[1;36m%s\e[0m Has Been Disabled from Project ID \e[1;36m%s\e[0m\n" "$router_id_confirm" "$project_id"
+                openstack router set --disable "$router_id_confirm" --os-project-id "$project_id"
+
+                printf "[INFORMATION] List of Routers for Floating IP \e[1;36m%s\e[0m\n" "$floating_ip"
+                openstack router list --os-project-id "$project_id" | grep -E "$router_id_confirm"
+
+                printf "[AFTER] Ping from Floating IP %s \e[1;36m%s\e[0m\n" "$floating_ip"
+                ping -c7 "$floating_ip"
+            else
+                printf "\e[1;31m[ERROR] Router Not Found or Error Inserting Router ID!\e[0m\n"
+            fi
+            ;;
+        E|e)
+            read -rp $'\e[1;33mINSERT PROJECT ID: \e[0m' project_id
+            printf "[INFORMATION] List of Instances for Project ID \e[1;36m%s\e[0m\n" "$project_id"
+            openstack server list --os-project-id "$project_id"
+
+            read -rp $'\e[1;33mINSERT FLOATING IP: \e[0m' floating_ip
+            printf "[INFORMATION] Detail of Floating IP  \e[1;36m%s\e[0m\n" "$floating_ip"
+            openstack floating ip list --os-project-id "$project_id" --fit-width | grep -E "$floating_ip"
+
+            router_id=$(openstack floating ip show "$floating_ip" --os-project-id "$project_id" | grep -E "router_id" | awk '{print $4}')
+
+            printf "[INFORMATION] List of Routers for Floating IP \e[1;36m%s\e[0m\n" "$floating_ip"
+            openstack router list --os-project-id "$project_id" --fit-width | grep -E "$router_id"
+
+            printf "[BEFORE] Ping from Floating IP %s \e[1;36m%s\e[0m\n" "$floating_ip"
+            ping -c7 "$floating_ip"
+
+            read -rp $'\e[1;33mINSERT ROUTER ID: \e[0m' router_id_confirm
+            if [ "$router_id" == "$router_id_confirm" ]; then
+                printf "[COMPLETED] Router \e[1;36m%s\e[0m Has Been Enabled from Project ID \e[1;36m%s\e[0m\n" "$router_id_confirm" "$project_id"
+                openstack router set --enable "$router_id_confirm" --os-project-id "$project_id"
+
+                printf "[INFORMATION] List of Routers for Floating IP \e[1;36m%s\e[0m\n" "$floating_ip"
+                openstack router list --os-project-id "$project_id" | grep -E "$router_id_confirm"
+
+                printf "[AFTER] Ping from Floating IP %s \e[1;36m%s\e[0m\n" "$floating_ip"
+                ping -c7 "$floating_ip"
+            else
+                printf "\e[1;31m[ERROR] Router Not Found or Error Inserting Router ID!\e[0m\n"
+            fi
+            ;;
+        X|x)
+            printf "\e[1;31m[INFORMATION] Exit from NEO Router Management Tools!\e[0m\n"
+            exit 0
+            ;;
+        *)
+            printf "\e[1;31m[ERROR] Invalid Option, Please Try Again!!\e[0m\n"
+            ;;
+    esac
+done
