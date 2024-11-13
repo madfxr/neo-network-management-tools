@@ -47,8 +47,8 @@ while true; do
             ;;
         1)
             read -rp $'\e[1;33mINSERT PROJECT ID: \e[0m' project_id
-            printf "[INFORMATION] List of Instances for Project ID \e[1;36m%s\e[0m\n" "$project_id"
-            openstack server list --os-project-id "$project_id" --fit-width
+            printf "[INFORMATION] List of Floating IP for Project ID \e[1;36m%s\e[0m\n" "$project_id"
+            openstack server list --os-project-id "$project_id" -c Name -c Networks --fit-width
             read -rp $'\e[1;33mINSERT FLOATING IP: \e[0m' floating_ip
             printf "[BEFORE] Router List for Project ID \e[1;36m%s\e[0m\n" "$project_id"
             openstack router list --os-project-id "$project_id" --fit-width
@@ -64,8 +64,8 @@ while true; do
             ;;
         2)
             read -rp $'\e[1;33mINSERT PROJECT ID: \e[0m' project_id
-            printf "[INFORMATION] List of Instances for Project ID \e[1;36m%s\e[0m\n" "$project_id"
-            openstack server list --os-project-id "$project_id" --fit-width
+            printf "[INFORMATION] List of Floating IP for Project ID \e[1;36m%s\e[0m\n" "$project_id"
+            openstack server list --os-project-id "$project_id" -c Name -c Networks --fit-width
             read -rp $'\e[1;33mINSERT FLOATING IP: \e[0m' floating_ip
             printf "[BEFORE] Router List for Project ID \e[1;36m%s\e[0m\n" "$project_id"
             openstack router list --os-project-id "$project_id" --fit-width
@@ -81,8 +81,8 @@ while true; do
             ;;
         3)
             read -rp $'\e[1;33mINSERT PROJECT ID: \e[0m' project_id
-            printf "[INFORMATION] List of Instances for Project ID \e[1;36m%s\e[0m\n" "$project_id"
-            openstack server list --os-project-id "$project_id" --fit-width
+            printf "[INFORMATION] List of Floating IP for Project ID \e[1;36m%s\e[0m\n" "$project_id"
+            openstack server list --os-project-id "$project_id" -c Name -c Networks --fit-width
             read -rp $'\e[1;33mINSERT FLOATING IP: \e[0m' floating_ip
             printf "[INFORMATION] Router List for Project ID \e[1;36m%s\e[0m\n" "$project_id"
             openstack router list --os-project-id "$project_id" --fit-width
@@ -101,8 +101,8 @@ while true; do
             ;;
         4)
             read -rp $'\e[1;33mINSERT PROJECT ID: \e[0m' project_id
-            printf "[INFORMATION] List of Instances for Project ID \e[1;36m%s\e[0m\n" "$project_id"
-            openstack server list --os-project-id "$project_id" --fit-width
+            printf "[INFORMATION] List of Floating IP for Project ID \e[1;36m%s\e[0m\n" "$project_id"
+            openstack server list --os-project-id "$project_id" -c Name -c Networks --fit-width
             read -rp $'\e[1;33mINSERT FLOATING IP: \e[0m' floating_ip
             printf "[INFORMATION] Router List for Project ID \e[1;36m%s\e[0m\n" "$project_id"
             openstack router list --os-project-id "$project_id" --fit-width
